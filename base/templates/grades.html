@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Courses </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <nav class="bg-gray-800">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="relative flex h-16 items-center justify-between">
+        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div class="flex flex-shrink-0 items-center">
+          </div>
+          <div class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <a href="{% url 'base:index' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Courses</a>
+              {% comment %} {% if user.is_authenticated %}
+                <a href="{% url 'base:grades' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Grades</a>
+              {% endif %} {% endcomment %}
+              {% comment %} <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Grades</a> {% endcomment %}
+            </div>
+          </div>
+        </div>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          {% if user.is_authenticated %}
+            <div class="flex justify-center align-center items-center text-gray-300 rounded-md px-3 py-2 text-sm font-medium">
+              <div>
+                <p class="p-1">Pablo Cabrera</p>
+                <a href="{% url 'base:logout' %}" class="p-1 cursor-pointer hover:bg-gray-700 hover:text-white">Logout</a>
+                {% comment %} <a href="{% url 'courses:logout' %}">Logout</a> {% endcomment %}
+              </div>
+              {% comment %} <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true"> {% endcomment %}
+                <img class="h-8 w-8 rounded-full" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngmart.com%2Ffiles%2F22%2FUser-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png&f=1&nofb=1&ipt=0bdf7aac280d713f0c4c8e99ca36ca2159a4adab7360de007ffe1e3180c0a029&ipo=images" alt="">
+              {% comment %} </button> {% endcomment %}
+            </div>
+          {% else %}
+            <div>
+              <form action="{% url 'base:login' %}" method="POST" class="flex text-white text-sm">
+                {% csrf_token %}
+                <div class="flex justify-center align-center items-center">
+                  <label for="first-name" class="text-sm font-semibold p-1">User Name</label>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  >
+                </div>
+                <div class="flex justify-center align-center items-center">
+                  <label for="first-name" class="text-sm font-semibold p-1">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    class="rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  >
+                </div>
+                <form class="flex justify-center align-center items-center p-1">
+                  <button type="submit" class="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
+                </form>
+              </form>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main class="w-8/12 ml-auto mr-auto pt-10">
+    <div class="flex justify-left align-middle items-center pt-4 pb-4">
+      <div onclick="goBack()" class="flex justify-center align-middle items-center hover:underline cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+        <p> Regresar </p>
+      </div>
+    </div>
+    {% if percentage > 50 %}
+    {% comment %} <div class="bg-indigo-900 text-center py-4 lg:px-4"> {% endcomment %}
+      <div class="p-2 bg-green-800 items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+        <span class="flex rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold mr-3">Your grade</span>
+        <span class="font-semibold mr-2 text-left flex-auto">{{ percentage }} %</span>
+        {% comment %} <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg> {% endcomment %}
+      </div>
+    {% comment %} </div> {% endcomment %}
+    {%else%}
+    {% comment %} <div class="bg-indigo-900 text-center py-4 lg:px-4"> {% endcomment %}
+      <div class="p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+        <span class="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Your grade</span>
+        <span class="font-semibold mr-2 text-left flex-auto">{{ percentage }} %</span>
+        {% comment %} <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg> {% endcomment %}
+      </div>
+    {% comment %} </div> {% endcomment %}
+    {%endif%}
+    {% for answer in  answers%}
+      <p>{{ forloop.counter }}. {{ answer.question.text }} </p>
+      {% if answer.choice.is_correct %}
+      <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+        <p class="font-bold">Correct!</p>
+        <p>{{ answer.choice.text }}</p>
+      </div>
+      {% else %}
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+        <p class="font-bold">Wrong!</p>
+        <p>{{ answer.choice.text }}</p>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </main>
+  <script>
+  function goBack() {
+      window.history.back();
+  }
+  </script>
+</body>
+</html>
