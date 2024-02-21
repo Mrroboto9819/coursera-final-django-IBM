@@ -1,7 +1,7 @@
 
 ## Final prject For Coursera IBM Django Certification
 
-It was a hard to make this work fine :D
+It was hard to make this work fine :D
 
 <img src="./evidence/07-final_old.png" />
 <img src="./evidence/07-final.png" />
